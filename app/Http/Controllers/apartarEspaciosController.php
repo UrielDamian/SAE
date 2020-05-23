@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Espacio;
+use Auth;
 
 class apartarEspaciosController extends Controller
 {
@@ -14,7 +15,8 @@ class apartarEspaciosController extends Controller
 
         $espacios=Espacio::all();
 
-        return view ("apartarEspacio",compact("espacios"));
+
+        return view ("apartarEspacio3",compact("espacios"));
     }
 
 
@@ -39,6 +41,17 @@ class apartarEspaciosController extends Controller
 
       echo "";
     }
+
+	public function pruebas(Request $request)
+	{
+
+		$user=Auth::user();
+		$nose=$request->input('usuario');
+		//echo "$user->id<br>";
+		$opciones="<tr><td>$nose</td></tr>";
+
+		echo $opciones;
+	}
 
 
 }

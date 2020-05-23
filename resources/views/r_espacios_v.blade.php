@@ -1,11 +1,21 @@
-
-@extends('layouts.apping')
+@extends('layouts.apping2')
 @section('title', 'Espacios')
 @section('content')
 
 
 <div class="panel panel-default">
-	<div class="panel-heading">Administrar Espacios</div>
+	<div class="x_title">
+		<h2>Administrar Espacios</h2>
+		<ul class="nav navbar-right panel_toolbox">
+			<li><a ><i ></i></a></li>
+			<li><a ><i ></i></a></li>
+			<li>
+				<a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+			</li>
+
+		</ul>
+		<div class="clearfix"></div>
+	</div>
 	<div class="panel-body">
 
 
@@ -48,7 +58,7 @@
 
 
 <div class="container">
-	<table id="espaciost" class="table table-hover table-condensed">
+	<table id="espaciost" class="table table-hover table-condensed" style="width:100%">
 		<thead>
 			<tr>
 				<th>Id</th>
@@ -150,7 +160,7 @@
 <script>
     $(function(){
        $('#buttoni').click(function() {
-		   var table = $('#espaciost').DataTable();
+
 		   var id = $('#id_admin').val();
 		   var res = $('#nombreEspacio').val();
 		   var des = $('#desEspacio').val();

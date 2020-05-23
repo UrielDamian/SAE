@@ -1,4 +1,4 @@
-@extends('layouts.apping')
+@extends('layouts.apping2')
 @section('title', 'bienvenidos')
 @section('content')
 
@@ -48,7 +48,7 @@
    </div>
   <div class="form-group">
     <select class="form-control form-control-sm" id="espacio" name= "espacio">
-            <option value="">Elige un espacio</option>
+            <option disabled selected>Elige un espacio</option>
         @foreach($espacios as $esp)
               <option value="{{$esp->ide}}">{{$esp->nombreEspacio}}</option>
         @endforeach

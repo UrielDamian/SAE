@@ -39,7 +39,7 @@ class premisosController extends Controller
        foreach ($recurso as $res) {
         // code...
         if($i==0){
-          $opciones.="<thead><td colspan=2>$res->name</td></thead>";
+          $opciones.="<thead><td>$res->name</td></thead>";
           $i=1;
         }
         $opciones.="<tr>";

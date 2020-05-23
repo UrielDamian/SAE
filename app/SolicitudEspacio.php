@@ -7,13 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class SolicitudEspacio extends Model
 {
 
-	 protected $fillable = [ 'id',
-	 						'usuario',
-							'nombreEspacio',
-							'espacio',
-							'fecha',
-							'horaInicio',
-							'horaFinal'
-						];
-	
+	protected $fillable = [
+		'id',
+		'usuario',
+		'nombreEspacio',
+		'even',
+		'fecha',
+		'horaInicio',
+		'horaFinal'
+	];
+
 }

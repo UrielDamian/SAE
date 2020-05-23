@@ -47,8 +47,8 @@ class Espacios_c extends Controller
 					//		 join users u on e.idencargado = u.id ');
 					return Datatables::of($espacios)
 					->addColumn('action', function($espacio){
-						return '<a href="#" class="btn btn-xs btn-primary edit" id="'.$espacio->ide.'"><i class="glyphicon glyphicon-edit"></i> Edit</a>' . ' '.
-                		'<a href="#" class="btn btn-xs btn-primary remove" id2="'.$espacio->ide.'"><i class="glyphicon glyphicon-remove"></i> borrar</a>'
+						return '<a href="#" class=" fa fa-pencil btn btn-xs btn-primary edit" id="'.$espacio->ide.'"><i class="glyphicon"></i> Edit</a>' . ' '.
+                		'<a href="#" class="fa fa-remove btn btn-xs btn-primary remove" id2="'.$espacio->ide.'"><i class="glyphicon"></i> Borrar</a>'
 						;})
 					->make(true);
 

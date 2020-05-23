@@ -73,33 +73,23 @@
 
 
 <li class="treeview">
-
-
-
-    @foreach ($me  as $m)
-
-   @if($m['nivel']==0)
-
-
-
-           <a href={{$m['url'] }}>
-                   <i class="fa fa-dashboard"></i> <span>{{$m['titulo'] }}</span>
-                   <i class="fa fa-angle-left pull-right"></i>
-
-          </a>
-
-    @elseif ($m['nivel']==1 && $m['otro']=='a')
-        <ul class="treeview-menu">
-    @elseif ($m['nivel']==2)
+	@foreach ($me  as $m)
+		@if($m['nivel']==0)
+			<a href={{$m['url'] }}>
+                <i class="fa fa-dashboard"></i> <span>{{$m['titulo'] }}</span>
+                <i class="fa fa-angle-left pull-right"></i>
+			</a>
+		@elseif ($m['nivel']==1 && $m['otro']=='a')
+			<ul class="treeview-menu">
+    	@elseif ($m['nivel']==2)
             <li><a href="{{$m['url'] }}"><i class="fa fa-circle-o"></i> {{$m['titulo'] }}</a></li>
-    @elseif ($m['nivel']==1 && $m['otro']=='c')
-      </ul>
-    </li>
+    	@elseif ($m['nivel']==1 && $m['otro']=='c')
+      		</ul>
+</li>
 <li class="treeview">
-
 @endif
 
- @endforeach
+@endforeach
 
 
               <li class="header">comunes</li>

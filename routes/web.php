@@ -63,3 +63,14 @@ Route::get("/Permisosquitar","premisosController@quitar")->name("quitarPermiso")
 Route::get("/apartar","apartarEspaciosController@apartar");
 
 Route::get("/guardarPeticion","apartarEspaciosController@insertar")->name("crearSolicitud");
+
+
+Route::get("prueba","apartarEspaciosController@pruebas")->name("prueba");
+
+Route::get("EventoComponente","EventoController@MostrarComponentes")->name('eventoComp');
+
+Route::get("BusCategoria","EventoController@MostrarCategoria")->name("BusCategoria");
+
+Route::get("BusCompo","EventoController@MostrarComp")->name("BusCompo");
+
+Route::get("BusCantidad","EventoController@MostrarCantidad")->name("BusCantidad");

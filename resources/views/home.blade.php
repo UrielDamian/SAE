@@ -1,5 +1,5 @@
 
-@extends('layouts.apping')
+@extends('layouts.apping2')
 @section('title', 'bienvenidos')
 @section('content')
 <div class="panel panel-default">
@@ -10,6 +10,6 @@
           </div>
         </div>
 
-        
+
       </div>
 @endsection
