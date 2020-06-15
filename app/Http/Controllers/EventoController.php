@@ -83,55 +83,72 @@ class EventoController extends Controller
         //
     }
 
+	public function test(Request $request){
+
+	}
 
 	public function MostrarComponentes(Request $request){
 
+		$opciones="";
 		$espacio=$request->input('espacio');
 		$evento=$request->input('evento');
 
-		$componentes= DB::table('eventos')
-			->join('espacios','espacio','=',"ide")
-			->join('componente_x_espacios','eventos.id',"=",'componente_x_espacios.evento')
-			->select('espa_componentes.cantidad', 'espa_componentes.precio', 'componentes.categoria', 'componentes.nombreComponente')
-			->where('espacios.ide', '=', $espacio)
-			->get();
 
-		$opciones="";
-		/*foreach ($componentes as $c ) {
-			$opciones.=$c->cantidad."<br>";
+		$existeEvento= DB::table('eventos')
+					->where('espacio','=',$espacio)
+					->where('Nombre','=',$evento)
+					->exists();
+
+
+
+		if ($existeEvento!=null) {
+			$existeEvento= DB::table('eventos')
+						->select('id')
+						->where('espacio','=',$espacio)
+						->where('Nombre','=',$evento)
+						->first();
+
+			$evento=$existeEvento->id;
+
+			$tieneCompo= DB::table('componente_x_evento')
+						->where('evento','=',$evento)
+						->exists();
+
+			if ($tieneCompo) {
+
+				$opciones="1";
+				$componentes= DB::table('componente_x_evento')
+					->select('cantidadUsar',
+							'categoria',
+							'Total',
+							'nombreComponente')
+					->where('evento', '=', $evento)
+					->get();
+
+				$contador=0;
+				foreach ($componentes as $comp) {
+					$costo=$comp->Total/$comp->cantidadUsar;
+					$opciones.="
+					<th>
+						<input type='text' class='form-control' readonly name='UsarCatego_$contador' id='UsarCatego_$contador' value='$comp->categoria'>
+					</th>
+					<th>
+						<input type='text'  class='form-control' readonly name='UsarCompo_$contador' id='UsarCompo_$contador' value='$comp->nombreComponente'>
+					</th>
+					<th>
+						<input type='text'  class='form-control' readonly name='UsarCantidad_$contador' id='UsarCantidad_$contador' value='$comp->cantidadUsar'>
+					</th>
+					<th>
+						<input type='text'   class='form-control' readonly name='UsarCosto_$contador' id='UsarCosto_$contador' value='$costo'>
+					</th>
+					<th>
+						<a href='#' class='fa fa-remove btn btn-xs btn-primary remove' onclick='remove_Compo($contador);'><i class='glyphicon'></i> Borrar</a>'
+					</th>";
+					$contador++;
+				}
+			}
+
 		}
-		$opciones.="<br>------------------<br>";*/
-		$opciones.='<thead>
-			<tr>
-				<th>Categoria</th>
-				<th>Componente</th>
-				<th>Cantidad a usar</th>
-				<th>Cantidad existente</th>
-			</tr>
-		</thead><tbody>';
-		$contador=0;
-		foreach ($componentes as $comp) {
-			$opciones.='<tr>
-							<td>
-								<input  title="falllllll" type="text" class="form-control uppercase"  id="categoria'.$contador.'" name="categoria'.$contador.'"  value="'.$comp->categoria.'" readonly >
-							</td>
-							<td>
-								<input  title="falllllll" type="text" class="form-control uppercase"  id="componente'.$contador.'" name="componente'.$contador.'"  value="'.$comp->nombreComponente.'" readonly >
-							</td>
-							<td>
-								<input  title="falllllll" type="text" class="form-control uppercase"  id="necesita'.$contador.'" name="necesita'.$contador.'"  value="0" required >
-							</td>
-							<td>
-								<input  title="falllllll" type="text" class="form-control uppercase"  id="cantidad'.$contador.'" name="cantidad'.$contador.'"  value="'.$comp->cantidad.'"  readonly>
-							</td>
-
-
-						</tr>';
-						$contador++;
-		}
-
-
-		$opciones.='</tbody>';
 		echo $opciones;
 	}
 
@@ -147,18 +164,8 @@ class EventoController extends Controller
 			->groupBy('componentes.categoria')
 			->get();
 
-			$opciones='<div class="row" id="show">
-
-				<div class="col-md-4 col-sm-12">
-					<label for="categotiaComp">Elige una categoria</label>
-					<select class="form-control form-control-sm" id="categotiaComp" onchange="Busc_componente();">
-						<option disabled selected>Elige una categoria</option>
-					</select>
-				</div>
-
-				<div class="col-md-3 col-sm-12">
-					<label for="componente">Elige un componente</label>
-					<select class="form-control form-control-sm" id="componente" onchange="Busc_cantidad();">';
+			$opciones='
+				';
 
 			$opciones.="<option disabled selected>Elige una categoria</option>";
 
@@ -166,22 +173,7 @@ class EventoController extends Controller
 				$opciones.="<option>$catego->categoria</option>";
 			}
 
-			$opciones.='	</select>
-			</div>
-
-			<div class="col-md-3 col-sm-12">
-				<label for="necesarios">Elige cuantos necesitaras</label>
-				<select class="form-control form-control-sm" id="necesarios">
-					<option disabled selected>Elige cuantos usaras</option>
-				</select>
-			</div>
-
-			<div class="col-md col-sm-12">
-
-				<button type="button" class="btn btn-info btn-lg glyphicon glyphicon-plus-sign" style="height: 40px; margin-top: 15px;">Add</button>
-
-			</div>
-		</div>';
+			$opciones.='	';
 		echo $opciones;
 	}
 
@@ -224,10 +216,198 @@ class EventoController extends Controller
 		$opciones="<option disabled selected>Elige cuantos usaras</option>";
 
 		$canti=$cant->cantidad;
-		for ($i=0; $i <=$canti; $i++) {
+		for ($i=1; $i <=$canti; $i++) {
 			$opciones.="<option>$i</option>";
 		}
 
 		echo $opciones;
+	}
+
+	public function addComponente(Request $request){
+
+
+		$espacio=$request->input('espacio');
+		$categoria=$request->input('categoria');
+		$componente=$request->input('componente');
+		$cantidadUsar=$request->input('cantidadUsar');
+
+		$categoriaUS=$request->input('categoriaUS');
+		$componenteUS=$request->input('componenteUS');
+		$costoUS=$request->input('costoUS');
+		$cantidadUS=$request->input('cantidadUS');
+
+		$categoriaUS=explode(",", $categoriaUS,-1);
+		$componenteUS=explode(",", $componenteUS,-1);
+		$costoUS=explode(",", $costoUS,-1);
+		$cantidadUS=explode(",",$cantidadUS,-1);
+
+
+		$estaAgregado=False;
+		$opciones="";
+
+		$contador=0;
+		for ($i=0; $i < count($categoriaUS); $i++) {
+
+			$categoriaUS[$i]=str_replace(" ","",$categoriaUS[$i]);
+			$componenteUS[$i]=str_replace(" ","",$componenteUS[$i]);
+			$cantidadUS[$i]=str_replace(" ","",$cantidadUS[$i]);
+			$costoUS[$i]=str_replace(" ","",$costoUS[$i]);
+			/*
+			$aux=$categoriaUS[$i]==$categoria;
+			$aux2=$componenteUS[$i]==$componente;
+
+
+			echo "<script>console.log( 'Esta categoria:".$categoria."".$categoriaUS[$i]."".$aux."' );</script>";
+			echo "<script>console.log( 'Esta componente:".$componente."".$componenteUS[$i]."".$aux2."' );</script>";
+			*/
+			if ($categoriaUS[$i]==$categoria && $componenteUS[$i]==$componente)
+			{
+				$cantidadUS[$i]=$cantidadUsar;
+				$estaAgregado=True;
+				//echo "<script>console.log( 'Esta agregado :".$estaAgregado."' );</script>";
+			}
+
+			$opciones.="
+			<tr>
+				<th>
+					<input type='text' class='form-control' readonly name='UsarCatego_$contador' id='UsarCatego_$contador' value='$categoriaUS[$i]'>
+				</th>
+				<th>
+					<input type='text'  class='form-control' readonly name='UsarCompo_$contador' id='UsarCompo_$contador' value='$componenteUS[$i]'>
+				</th>
+				<th>
+					<input type='text'  class='form-control' readonly name='UsarCantidad_$contador' id='UsarCantidad_$contador' value='$cantidadUS[$i]'>
+				</th>
+				<th>
+					<input type='text'   class='form-control' readonly name='UsarCosto_$contador' id='UsarCosto_$contador' value='$costoUS[$i]'>
+				</th>
+				<th>
+					<a href='#' class='fa fa-remove btn btn-xs btn-primary remove' onclick='remove_Compo($contador);'><i class='glyphicon'></i> Borrar</a>
+				</th>
+			</tr>";
+
+			$contador++;
+		}
+
+		if (!$estaAgregado) {
+
+			$precio= DB::table('espa_componentes')
+				->join('espacios','espacio_id','=',"ide")
+				->join( 'componentes', 'espa_componentes.compont_id', "=" , 'componentes.id')
+				->select('precio')
+				->where('espacios.ide', '=', $espacio)
+				->where('componentes.categoria','=', $categoria)
+				->where('componentes.nombreComponente','=', $componente)
+				->first();
+
+			$opciones.="
+			<tr>
+				<th>
+					<input type='text' class='form-control' readonly name='UsarCatego_$contador' id='UsarCatego_$contador' value='$categoria'>
+				</th>
+				<th>
+					<input type='text'  class='form-control' readonly name='UsarCompo_$contador' id='UsarCompo_$contador' value='$componente'>
+				</th>
+				<th>
+					<input type='text'  class='form-control' readonly name='UsarCantidad_$contador' id='UsarCantidad_$contador' value='$cantidadUsar'>
+				</th>
+				<th>
+					<input type='text'   class='form-control' readonly name='UsarCosto_$contador' id='UsarCosto_$contador' value='$precio->precio'>
+				</th>
+				<th>
+					<a href='#' class='fa fa-remove btn btn-xs btn-primary remove' onclick='remove_Compo($contador);'><i class='glyphicon'></i> Borrar</a>
+				</th>
+				</tr>";
+
+		}
+
+		echo $opciones;
+	}
+
+	public function quitComponente(Request $request){
+
+		$categoriaUS=$request->input('categoriaUS');
+		$componenteUS=$request->input('componenteUS');
+		$costoUS=$request->input('costoUS');
+		$cantidadUS=$request->input('cantidadUS');
+
+		$categoriaUS=explode(",", $categoriaUS,-1);
+		$componenteUS=explode(",", $componenteUS,-1);
+		$costoUS=explode(",", $costoUS,-1);
+		$cantidadUS=explode(",",$cantidadUS,-1);
+
+
+
+		$contador=0;
+		$opciones="";
+
+		for ($i=0; $i < count($categoriaUS); $i++) {
+
+			$categoriaUS[$i]=str_replace(" ","",$categoriaUS[$i]);
+			$componenteUS[$i]=str_replace(" ","",$componenteUS[$i]);
+			$costoUS[$i]=str_replace(" ","",$costoUS[$i]);
+			$cantidadUS[$i]=str_replace(" ","",$cantidadUS[$i]);
+
+			//echo "<script>console.log( 'estoy en el for' );</script>";
+			$opciones.="
+			<tr>
+				<th>
+					<input type='text' class='form-control' readonly name='UsarCatego_$contador' id='UsarCatego_$contador' value='$categoriaUS[$i]'>
+				</th>
+				<th>
+					<input type='text'  class='form-control' readonly name='UsarCompo_$contador' id='UsarCompo_$contador' value='$componenteUS[$i]'>
+				</th>
+				<th>
+					<input type='text'  class='form-control' readonly name='UsarCantidad_$contador' id='UsarCantidad_$contador' value='$cantidadUS[$i]'>
+				</th>
+				<th>
+					<input type='text'   class='form-control' readonly name='UsarCosto_$contador' id='UsarCosto_$contador' value='$costoUS[$i]'>
+				</th>
+				<th>
+					<a href='#' class='fa fa-remove btn btn-xs btn-primary remove' onclick='remove_Compo($contador);'><i class='glyphicon'></i> Borrar</a>
+				</th>
+			</tr>";
+
+			$contador++;
+		}
+
+		echo $opciones;
+	}
+
+
+	public function HorasOcupadas(Request $request){
+
+		//return "holaaa".$request->input("espacio");
+		/* 	SELECT fecha,HoraInicio,HoraFinal
+			FROM SAE.eventos e
+			INNER JOIN SAE.solicitud_eventos
+				ON e.id=even
+				WHERE e.espacio=3 and fecha>='2020-06-13';
+
+
+	*/
+		$espacio=$request->input('espacio');
+		$f=Date("Y-m-d");
+		$fecha= Date("Y-m-d",strtotime($f."+ 4 days"));
+
+		$horaFecha= DB::table('eventos')
+			->join('solicitud_eventos','eventos.id','=',"even")
+			->select( 'fecha','HoraInicio','HoraFinal')
+			->where('espacio', '=', $espacio)
+			->where('fecha','>=',$fecha)
+			->OrderBy('fecha')
+			->get();
+
+		$auxFecha="";
+		$cadena="";
+		foreach ($horaFecha as $hor) {
+
+
+		 	$cadena.="$hor->fecha $hor->HoraInicio $hor->HoraFinal #";
+		}
+
+
+		return $cadena;
+
 	}
 }

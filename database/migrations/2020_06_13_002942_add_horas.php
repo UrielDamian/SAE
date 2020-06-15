@@ -14,8 +14,8 @@ class AddHoras extends Migration
     public function up()
     {
         Schema::table('solicitud_eventos', function (Blueprint $table) {
-			$table->dateTime('HoraInicio', 0);
-			$table->dateTime('HoraFinal', 0);
+			$table->Time('HoraInicio', 0);
+			$table->Time('HoraFinal', 0);
         });
     }
 

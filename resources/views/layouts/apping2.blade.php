@@ -3,7 +3,7 @@
 	$ruta=Request::path();
 	$esta=False;
 
-	if ($ruta=='menu' or $ruta=='home') {
+	if ($ruta=='menu' or $ruta=='home' or $ruta='holitas') {
 		$esta=True;
 	}else{
 
@@ -26,67 +26,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="icon" href="images/ingenieria.ico" type="image/ico" />
 
+
     <title>@yield('title')</title>
 
 
 
 
+	<link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+
+  	<link  href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
+
+  	<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 
-  <link  href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
-  <script src="http://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+	    <!-- Bootstrap -->
+	    <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+	    <!-- Font Awesome -->
+	    <link href="vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+	    <!-- NProgress -->
+	    <link href="vendors/nprogress/nprogress.css" rel="stylesheet">
+	    <!-- iCheck -->
+	    <link href="vendors/iCheck/skins/flat/green.css" rel="stylesheet">
 
-  <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
-
-
-
-
-
-
-
-
+	    <!-- bootstrap-progressbar -->
+	    <link href="vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+	    <!-- JQVMap -->
+	    <link href="vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet"/>
 
 
-
-
-
-
-
-
-
-
+	    <!-- Custom Theme Style -->
+	    <link href="build/css/custom.min.css" rel="stylesheet">
 
 
 
 
 
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+		<script src="http://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+
+
+		<script type="text/javascript" src="js/bootstrap.min.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="js/datetimepicker.js" charset="UTF-8"></script>
 
 
 
 
 
 
-    <!-- Bootstrap -->
-    <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <!-- NProgress -->
-    <link href="vendors/nprogress/nprogress.css" rel="stylesheet">
-    <!-- iCheck -->
-    <link href="vendors/iCheck/skins/flat/green.css" rel="stylesheet">
 
-    <!-- bootstrap-progressbar -->
-    <link href="vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
-    <!-- JQVMap -->
-    <link href="vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet"/>
-    <!-- bootstrap-daterangepicker -->
-    <link href="vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 
-    <!-- Custom Theme Style -->
-    <link href="build/css/custom.min.css" rel="stylesheet">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -192,17 +203,8 @@
         <!-- /top navigation -->
 		<div class="right_col" role="main">
           <div class="">
-			  <div class="row" style="display: inline;">
-				  <div class="top_tiles">
+			  @yield('content')
 
-
-
-
-
-
-					  @yield('content')
-				  </div>
-			  </div>
 		  </div>
 	  </div>
 
@@ -223,7 +225,6 @@
 
 
     <!-- jQuery -->
-<!--    <script src="vendors/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->
     <script src="vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <!-- FastClick -->
@@ -243,7 +244,6 @@
     <!-- Flot -->
     <script src="vendors/Flot/jquery.flot.js"></script>
     <script src="vendors/Flot/jquery.flot.pie.js"></script>
-    <script src="vendors/Flot/jquery.flot.time.js"></script>
     <script src="vendors/Flot/jquery.flot.stack.js"></script>
     <script src="vendors/Flot/jquery.flot.resize.js"></script>
     <!-- Flot plugins -->
@@ -261,10 +261,13 @@
     <script src="vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
 
 
-
+	<!-- jQuery Smart Wizard -->
+		<script src="vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
 
     <!-- Custom Theme Scripts -->
     <script src="build/js/custom.min.js"></script>
+
+
 
   </body>
 </html>

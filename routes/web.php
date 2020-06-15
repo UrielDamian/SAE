@@ -74,3 +74,15 @@ Route::get("BusCategoria","EventoController@MostrarCategoria")->name("BusCategor
 Route::get("BusCompo","EventoController@MostrarComp")->name("BusCompo");
 
 Route::get("BusCantidad","EventoController@MostrarCantidad")->name("BusCantidad");
+Route::get("addComponente","EventoController@addComponente")->name('addComponente');
+
+Route::get("quitComponente","EventoController@quitComponente")->name('quitComponente');
+
+Route::get("buscarHoras","EventoController@HorasOcupadas")->name('buscarHoras');
+
+
+Route::get("holitas",function () {
+    return view('holitas');
+});
+
+Route::get("holitasTest","EventoController@test")->name('holitasTest');
