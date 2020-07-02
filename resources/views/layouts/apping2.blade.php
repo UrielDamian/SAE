@@ -203,6 +203,7 @@
         <!-- /top navigation -->
 		<div class="right_col" role="main">
           <div class="">
+
 			  @yield('content')
 
 		  </div>

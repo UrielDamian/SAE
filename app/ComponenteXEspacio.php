@@ -6,11 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class ComponenteXEspacio extends Model
 {
+
+	protected $table = 'componente_x_evento';
 	protected $fillable = [
 		'id',
-		'cantidad',
 		'Total',
 		'evento',
-		'componente'
+		'cantidadUsar',
+		'categoria',
+		'nombreComponente'
 	];
 }

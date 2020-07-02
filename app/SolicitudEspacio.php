@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class SolicitudEspacio extends Model
 {
 
+	protected $table = 'solicitud_eventos';
+
 	protected $fillable = [
 		'id',
 		'usuario',

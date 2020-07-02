@@ -203,7 +203,9 @@ class EventoController extends Controller
 		$espacio=$request->input('espacio');
 		$categoria=$request->input('categoria');
 		$componente=$request->input('componente');
-
+		if ($categoria=="" or $componente=="") {
+			return "";
+		}
 		$cant= DB::table('espa_componentes')
 			->join('espacios','espacio_id','=',"ide")
 			->join('componentes','espa_componentes.compont_id',"=",'componentes.id')
@@ -244,6 +246,11 @@ class EventoController extends Controller
 
 		$estaAgregado=False;
 		$opciones="";
+
+		if ($categoria=="" or $componente=="" or $cantidadUsar=="" or $espacio=="") {
+			return "";
+		}
+
 
 		$contador=0;
 		for ($i=0; $i < count($categoriaUS); $i++) {
@@ -377,15 +384,6 @@ class EventoController extends Controller
 
 	public function HorasOcupadas(Request $request){
 
-		//return "holaaa".$request->input("espacio");
-		/* 	SELECT fecha,HoraInicio,HoraFinal
-			FROM SAE.eventos e
-			INNER JOIN SAE.solicitud_eventos
-				ON e.id=even
-				WHERE e.espacio=3 and fecha>='2020-06-13';
-
-
-	*/
 		$espacio=$request->input('espacio');
 		$f=Date("Y-m-d");
 		$fecha= Date("Y-m-d",strtotime($f."+ 4 days"));
@@ -401,9 +399,7 @@ class EventoController extends Controller
 		$auxFecha="";
 		$cadena="";
 		foreach ($horaFecha as $hor) {
-
-
-		 	$cadena.="$hor->fecha $hor->HoraInicio $hor->HoraFinal #";
+			$cadena.="$hor->fecha $hor->HoraInicio $hor->HoraFinal #";
 		}
 
 

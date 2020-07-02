@@ -10,6 +10,7 @@ class Evento extends Model
 		'id',
 		'Nombre',
 		'Descripcion',
+		'nuevo',
 		'espacio'
 	];
 }
